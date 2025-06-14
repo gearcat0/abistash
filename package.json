@@ -1,11 +1,11 @@
 {
   "name": "abistash",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Fetch contract ABIs from Etherscan and store them locally",
-  "bin": {"abistash": "./abistash.js"},
   "keywords": [
     "evm",
     "ethers",
+    "web3",
     "etherscan"
   ],
   "homepage": "https://github.com/gearcat0/abistash#readme",
@@ -20,6 +20,9 @@
   "author": "gearcat0",
   "type": "commonjs",
   "main": "abistash.js",
+  "bin": {
+    "abistash": "./abistash.js"
+  },
   "scripts": {
     "test": "abistash 0xdAC17F958D2ee523a2206206994597C13D831ec7 mainnet"
   },
