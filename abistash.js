@@ -119,6 +119,7 @@ function usage() {
 async function main() {
   if (ETHERSCAN_API_KEY.length != 34) {
     console.log(`ETHERSCAN_API_KEY must contain a valid API key`)
+    process.exit(1)
   }
   const targets = process.argv.slice(2)
   if (targets.length < 1) {
