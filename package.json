@@ -2,6 +2,7 @@
   "name": "abistash",
   "version": "1.0.0",
   "description": "Fetch contract ABIs from Etherscan and store them locally",
+  "bin": {"abistash": "./abistash.js"},
   "keywords": [
     "evm",
     "ethers",
