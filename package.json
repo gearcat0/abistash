@@ -1,6 +1,6 @@
 {
   "name": "abistash",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Fetch contract ABIs from Etherscan and store them locally",
   "keywords": [
     "evm",
