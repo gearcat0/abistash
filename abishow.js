@@ -32,9 +32,15 @@ async function main() {
     process.exit(1)
   }
 
+  let beaconUpgradable = 0
   let abi
   try {
-    abi = JSON.parse(fs.readFileSync(`${CACHE_DIR}/named/${target[0]}`))
+    if (target[0].startsWith('0x')) {
+      const chain = target[1] || 1
+      abi = JSON.parse(fs.readFileSync(`${CACHE_DIR}/${chain}/${target[0]}`))
+    } else {
+      abi = JSON.parse(fs.readFileSync(`${CACHE_DIR}/named/${target[0]}`))
+    }
   } catch (e) {
     console.log(`Can't open ${target[0]}`)
     process.exit(1)
@@ -43,11 +49,23 @@ async function main() {
     let args = ''
     switch (decl.type) {
       case 'constructor':
+        args = fmtInputs(decl.inputs)
+        console.log(`${decl.type} (${args}) ${decl.stateMutability || ''}`)
+        break
+      case 'fallback':
+        break
+      case 'receive':
+        break
+      case 'event':
+        args = fmtInputs(decl.inputs)
+        declText = `${decl.type} ${decl.name}(${args}) ${decl.stateMutability || ''}`
+        console.log(declText)
+        if (declText.startsWith('event AdminChanged(address previousAdmin, address newAdmin)')
+            || declText.startsWith('event BeaconUpgraded(address beacon)')
+            || declText.startsWith('event Upgraded(address implementation)')) beaconUpgradable++
         break
       case 'function':
-      case 'event':
       case 'error':
-        //if (decl.type == 'error') console.log(decl)
         args = fmtInputs(decl.inputs)
         console.log(`${decl.type} ${decl.name}(${args}) ${decl.stateMutability || ''}`)
         break
@@ -55,6 +73,7 @@ async function main() {
         console.log(`${decl.type} UNKNOWN`)
     }
   }
+  if (beaconUpgradable >= 2) console.log(`# contract appears to be a proxy`)
 }
 
 main()
